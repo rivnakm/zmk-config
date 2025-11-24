@@ -1,0 +1,1 @@
+rm -rfv .west build modules zephyr zmk

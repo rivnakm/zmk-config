@@ -1,0 +1,10 @@
+.venv/
+.west/
+build/
+modules/
+zephyr/
+zmk/
+
+*.bin
+*.hex
+*.uf2
