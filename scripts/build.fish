@@ -18,3 +18,7 @@ cp -v build/right/zephyr/zmk.uf2 sweep_right.uf2
 west build -s zmk/app \
     -d build/settings_reset -b "nice_nano_v2" -- -DSHIELD="settings_reset" $EXTRA_CMAKE_ARGS || return;
 cp -v build/settings_reset/zephyr/zmk.uf2 settings_reset.uf2
+
+pipx run --spec keymap-drawer keymap parse -c 10 -z {$CONFIG_DIR}/cradio.keymap > /tmp/sweep_keymap.yaml
+pipx run --spec keymap-drawer keymap draw /tmp/sweep_keymap.yaml > sweep_keymap.svg
+convert -background none sweep_keymap.svg sweep_keymap.png

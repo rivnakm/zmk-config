@@ -9,15 +9,21 @@
     continue-list = <UNDERSCORE MINUS BACKSPACE DELETE>;
 };
 
+&lt {
+    tapping-term-ms = <200>;
+    quick-tap-ms = <200>;
+    require-prior-idle-ms = <125>;
+};
+
 / {
     behaviors {
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            require-prior-idle-ms = <100>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <125>;
             bindings = <&kp>, <&kp>;
         };
     };
@@ -29,43 +35,81 @@
             then-layer = <3>;
         };
     };
+    
+    macros {
+        mc_home: minecraft_home {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_tap &kp T &kp FSLH &kp H &kp O &kp M &kp E &kp ENTER>
+                ;
+        };
+        vs_fmt: visual_studio_format_document {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LCTRL>
+                , <&macro_tap &kp K &kp D>
+                , <&macro_release &kp LCTRL>
+                ;
+        };
+        vs_ctx_act: visual_studio_context_action {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LCTRL>
+                , <&macro_tap &kp DOT>
+                , <&macro_release &kp LCTRL>
+                ;
+        };
+        vs_rename: visual_studio_rename {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+                = <&macro_press &kp LCTRL>
+                , <&macro_tap &kp R &kp R>
+                , <&macro_release &kp LCTRL>
+                ;
+        };
+    };
 
     keymap {
         compatible = "zmk,keymap";
-        default_layer {
-            display-name = "Default Layer";
+        base_layer {
+            display-name = "Base Layer";
             bindings = <
-        //╭─────────────┬─────────────┬────────────┬────────────┬──────────╮   ╭────────────┬────────────┬────────────────┬───────────────┬────────────────╮
-        //│  Q          │  W          │  E         │  R         │  T       │   │  Y         │  U         │  I             │  O            │  P             │
-            &kp Q         &kp W        &kp E         &kp R        &kp T          &kp Y        &kp U        &kp I            &kp O           &kp P
-        //├─────────────┼─────────────┼────────────┼────────────┼──────────┤   ├────────────┼────────────┼────────────────┼───────────────┼────────────────┤
-        //│  A          │  S          │  D         │  F         │  G       │   │  H         │  J         │  K             │  L            │  ; :           │
-            &kp A         &kp S         &kp D         &kp F       &kp G          &kp H        &kp J        &kp K            &kp L           &kp SEMI
-        //├─────────────┼─────────────┼────────────┼────────────┼──────────┤   ├────────────┼────────────┼────────────────┼───────────────┼────────────────┤
-        //│  Z          │  X          │  C         │  V         │  B       │   │  N         │  M         │ , <            │ . >           │ / ?            │
-            &ht LSHFT Z   &ht LCTRL X   &ht LALT C   &ht LGUI V   &kp B          &kp N        &ht RGUI M   &ht RALT COMMA   &ht RCTRL DOT   &ht RSHFT FSLH
-        //╰─────────────┴─────────────┴────────────┼────────────┼──────────┤   ├────────────┼────────────┼────────────────┴───────────────┴────────────────╯
-                                                     &lt 2 TAB    &kp SPACE     &lt 1 ENTER   &kp BSPC
-        //                                         ╰────────────┴──────────╯   ╰────────────┴────────────╯
+        //╭─────────────┬─────────────┬────────────┬────────────┬──────────╮   ╭───────────┬───────────────┬────────────┬─────────────┬────────────────╮
+        //│ Q           │ W           │ E          │ R          │ T        │   │ Y         │ U             │ I          │ O           │ P              │
+            &kp Q         &kp W         &kp E        &kp R        &kp T          &kp Y       &kp U           &kp I        &kp O         &kp P
+        //├─────────────┼─────────────┼────────────┼────────────┼──────────┤   ├───────────┼───────────────┼────────────┼─────────────┼────────────────┤
+        //│ A           │ S           │ D          │ F          │ G        │   │ H         │ J             │ K          │ L           │ ; :            │
+            &ht LSHFT A   &ht LCTRL S   &ht LALT D   &ht LGUI F   &kp G          &kp H       &ht RGUI J      &ht RALT K   &ht RCTRL L   &ht RSHFT SEMI
+        //├─────────────┼─────────────┼────────────┼────────────┼──────────┤   ├───────────┼───────────────┼────────────┼─────────────┼────────────────┤
+        //│ Z           │ X           │ C          │ V          │ B        │   │ N         │ M             │ , <        │ . >         │ / ?            │
+            &kp Z         &kp X         &kp C        &kp V        &kp B          &kp N       &kp M           &kp COMMA    &kp DOT       &kp FSLH
+        //╰─────────────┴─────────────┴────────────┼────────────┼──────────┤   ├───────────┼───────────────┼────────────┴─────────────┴────────────────╯
+        //                                         │ Tab (2)    │ Space    │   │ Enter     │ Backspace (1) │
+                                                     &lt 2 TAB    &kp SPACE      &kp ENTER   &lt 1 BSPC
+        //                                         ╰────────────┴──────────╯   ╰───────────┴───────────────╯
             >;
         };
 
         right_layer {
             display-name = "Right Layer";
             bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  1       │  2       │  3       │          │   │ HOME     │ PAGE DN  │ PAGE UP  │ END      │          │
-            &trans     &kp N1     &kp N2     &kp N3     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &trans
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ DELETE   │  4       │  5       │  6       │          │   │ LEFT     │ DOWN     │ UP       │ RIGHT    │ ' "      │
-            &kp DEL    &kp N4     &kp N5     &kp N6     &trans         &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &kp SQT
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CAPS     │  7       │  8       │  9       │  0       │   │          │          │          │          │          │
-           &caps_word  &kp N7     &kp N8     &kp N9     &kp N0         &trans     &trans     &trans     &trans    &kp LC(LA(DEL))
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 │          │ Escape   │   │          │          │
-                                             &trans     &kp ESC        &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+        //╭────────────┬──────────┬──────────┬──────────┬──────────╮   ╭────────────┬──────────────┬──────────────┬──────────┬─────────────────╮
+        //│            │ 1        │ 2        │ 3        │          │   │ Home       │ Pg Dn        │ Pg Up        │ End      │                 │
+            &trans       &kp N1     &kp N2     &kp N3     &trans         &kp HOME     &kp PG_DN      &kp PG_UP      &kp END    &trans
+        //├────────────┼──────────┼──────────┼──────────┼──────────┤   ├────────────┼──────────────┼──────────────┼──────────┼─────────────────┤
+        //│ Delete     │ 4        │ 5        │ 6        │          │   │ Left       │ Down         │ Up           │ Right    │ ' "             │
+            &kp DEL      &kp N4     &kp N5     &kp N6     &trans         &kp LEFT     &kp DOWN       &kp UP         &kp RIGHT  &kp SQT
+        //├────────────┼──────────┼──────────┼──────────┼──────────┤   ├────────────┼──────────────┼──────────────┼──────────┼─────────────────┤
+        //│ Caps       │ 7        │ 8        │ 9        │ 0        │   │ Mute       │ Vol Down     │ Vol Up       │          │ Ctrl+Alt+Del    │
+            &caps_word   &kp N7     &kp N8     &kp N9     &kp N0         &kp C_MUTE   &kp C_VOL_DN   &kp C_VOL_UP   &trans     &kp LC(LA(DEL))
+        //╰────────────┴──────────┴──────────┼──────────┼──────────┤   ├────────────┼──────────────┼──────────────┴──────────┴─────────────────╯
+        //                                   │          │ Escape   │   │            │              │
+                                               &trans     &kp ESC        &trans       &trans
+        //                                   ╰──────────┴──────────╯   ╰────────────┴──────────────╯
             >;
         };
         
@@ -73,13 +117,13 @@
             display-name = "Left Layer";
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  [       │  {       │  }       │          │   │  ^       │  (       │  )       │  ]       │  ~       │
-            &trans     &kp LBKT   &kp LBRC   &kp RBRC   &trans         &kp CARET  &kp LPAR   &kp RPAR   &kp RBKT   &kp TILDE
+        //│          │ [        │ {        │ (        │ !        │   │ ^        │ )        │ }        │ ]        │ ~        │
+            &trans     &kp LBKT   &kp LBRC   &kp LPAR   &kp EXCL       &kp CARET  &kp RPAR   &kp RBRC   &kp RBKT   &kp TILDE
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  !       │  @       │  #       │  $       │  %       │   │  *       │  -       │  =       │  \       │  `       │
-            &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp ASTRK  &kp MINUS  &kp EQUAL  &kp BSLH   &kp GRAVE
+        //│          │ @        │ #        │ $        │ %        │   │ *        │ -        │ =        │ \        │ `        │
+            &trans     &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp ASTRK  &kp MINUS  &kp EQUAL  &kp BSLH   &kp GRAVE
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │  &       │  _       │  +       │  │       │          │
+        //│          │          │          │          │          │   │ &        │ _        │ +        │ │        │          │
             &sk LSHFT  &sk LCTRL  &sk LALT   &sk LGUI   &trans         &kp AMPS   &kp UNDER  &kp PLUS   &kp PIPE   &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &trans     &trans
@@ -90,18 +134,36 @@
         tri_layer {
             display-name = "Tri Layer";
             bindings = <
-        //╭──────────┬─────────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ RESET    │ PROFILE 0   │          │          │          │   │ F1       │ F2       │ F3       │ F10      │          │
-           &sys_reset  &bt BT_SEL 0  &trans     &trans     &trans         &kp F1     &kp F2     &kp F3     &kp F10    &trans
-        //├──────────┼─────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│BOOTLOADER│ PROFILE 1   │          │          │          │   │ F4       │ F5       │ F6       │ F11      │          │
-           &bootloader &bt BT_SEL 1  &trans     &trans     &trans         &kp F4     &kp F5     &kp F6     &kp F11    &trans
-        //├──────────┼─────────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CLEAR BT │ PROFILE 2   │          │          │          │   │ F7       │ F8       │ F9       │ F12      │          │
-           &bt BT_CLR  &bt BT_SEL 2  &trans     &trans     &trans         &kp F7     &kp F8     &kp F9     &kp F12    &trans
-        //╰──────────┴─────────────┴──────────┼──────────┼──────────┤   ├──────────┴──────────┼──────────┼──────────┴──────────╯
-                                                &trans     &trans         &trans     &trans
-        //                                    ╰──────────┴──────────╯   ╰──────────┴──────────╯
+        //╭─────────────┬──────────────┬────────────┬───────────────┬──────────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│ RESET       │ PROFILE 0    │ Rename     │ Ctrl+Shift+C  │ Ctrl+Shift+V │   │ F1       │ F2       │ F3       │ F10      │          │
+            &sys_reset    &bt BT_SEL 0   &vs_rename   &kp LC(LS(C))   &kp LC(LS(V))      &kp F1     &kp F2     &kp F3     &kp F10    &trans
+        //├─────────────┼──────────────┼────────────┼───────────────┼──────────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ BOOTLOADER  │ PROFILE 1    │            │               │              │   │ F4       │ F5       │ F6       │ F11      │          │
+            &bootloader   &bt BT_SEL 1   &trans       &kp LC(C)       &kp LC(V)          &kp F4     &kp F5     &kp F6     &kp F11    &trans
+        //├─────────────┼──────────────┼────────────┼───────────────┼──────────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ CLEAR BT    │ PROFILE 2    │            │ Format Code   │ Ctx Action   │   │ F7       │ F8       │ F9       │ F12      │          │
+            &bt BT_CLR    &bt BT_SEL 2   &trans       &vs_fmt         &vs_ctx_act        &kp F7     &kp F8     &kp F9     &kp F12    &to 4
+        //╰─────────────┴──────────────┴────────────┼───────────────┼──────────────┤   ├──────────┴──────────┼──────────┼──────────┴──────────╯
+                                                      &trans          &trans             &trans     &trans
+        //                                          ╰───────────────┴──────────────╯   ╰──────────┴──────────╯
+            >;
+        };
+        
+        game_layer {
+            display-name = "Game Layer";
+            bindings = <
+        //╭─────────────┬────────┬────────┬───────────────┬───────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│ Q           │ W      │ E      │ R             │           │   │ /home    │          │          │          │          │
+            &kp Q         &kp W    &kp E    &kp R           &trans          &mc_home   &trans     &trans     &trans     &trans
+        //├─────────────┼────────┼────────┼───────────────┼───────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ A           │ S      │ D      │ F             │           │   │          │          │          │          │          │
+            &kp A         &kp S    &kp D    &kp F           &trans          &trans     &trans     &trans     &trans     &trans
+        //├─────────────┼────────┼────────┼───────────────┼───────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│ Z (Shift)   │        │        │               │ Escape    │   │          │          │          │          │          │
+            &ht LSHFT Z   &trans   &trans   &trans          &kp ESC         &trans     &trans     &trans     &trans     &to 0
+        //╰─────────────┴────────┴────────┼───────────────┼───────────┤   ├──────────┴──────────┼──────────┼──────────┴──────────╯
+                                            &ht LCTRL TAB   &kp SPACE       &trans     &trans
+        //                                ╰───────────────┴───────────╯   ╰──────────┴──────────╯
             >;
         };
     };
