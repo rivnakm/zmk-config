@@ -10,9 +10,9 @@
 };
 
 &lt {
-    tapping-term-ms = <250>;
-    quick-tap-ms = <250>;
-    require-prior-idle-ms = <150>;
+    tapping-term-ms = <175>;
+    quick-tap-ms = <225>;
+    require-prior-idle-ms = <100>;
 };
 
 / {
@@ -21,10 +21,30 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <250>;
-            quick-tap-ms = <250>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <175>;
+            quick-tap-ms = <225>;
+            require-prior-idle-ms = <125>;
             bindings = <&kp>, <&kp>;
+        };
+        td0: tap_dance_0 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp LSHFT>, <&kp Z>;
+        };
+        td1: tap_dance_1 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp LCTRL>, <&kp LALT>;
+        };
+        td2: tap_dance_2 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&kp ESC>, <&kp T>;
+        };
+        td3: tap_dance_3 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            bindings = <&mc_home>, <&kp Y>;
         };
     };
 
@@ -40,9 +60,7 @@
         mc_home: minecraft_home {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings
-                = <&macro_tap &kp T &kp FSLH &kp H &kp O &kp M &kp E &kp ENTER>
-                ;
+            bindings = <&macro_tap &kp T &kp FSLH &kp H &kp O &kp M &kp E &kp ENTER>;
         };
     };
 
@@ -89,18 +107,18 @@
         left_layer {
             display-name = "Left Layer";
             bindings = <
-        //╭───────────┬──────────┬──────────┬───────────┬───────────╮   ╭───────────┬───────────┬──────────┬───────────┬───────────╮
-        //│ `         │ [        │ {        │ (         │ !         │   │ ^         │ )         │ }        │ ]         │ ~         │
-            &kp GRAVE   &kp LBKT   &kp LBRC   &kp LPAR    &kp EXCL        &kp CARET   &kp RPAR    &kp RBRC   &kp RBKT    &kp TILDE
-        //├───────────┼──────────┼──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┼───────────┼───────────┤
-        //│           │ !        │ &        │ =         │ %         │   │ *         │ -         │ |        │ ?         │           │
-            &trans      &kp EXCL   &kp AMPS   &kp EQUAL   &kp PRCNT       &kp ASTRK   &kp MINUS   &kp PIPE   &kp QMARK   &trans
-        //├───────────┼──────────┼──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┼───────────┼───────────┤
-        //│           │          │ @        │ +         │ $         │   │ #         │ _         │ \        │ /         │           │
-            &trans      &trans     &kp AT     &kp PLUS    &kp DLLR        &kp HASH    &kp UNDER   &kp BSLH   &kp FSLH    &trans
-        //╰───────────┴──────────┴──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┴───────────┴───────────╯
-                                              &trans      &trans          &trans      &trans
-        //                                  ╰───────────┴───────────╯   ╰───────────┴───────────╯
+        //╭───────────┬───────────┬──────────┬───────────┬───────────╮   ╭───────────┬───────────┬──────────┬───────────┬───────────╮
+        //│ `         │ [         │ {        │ (         │ <         │   │ >         │ )         │ }        │ ]         │ ~         │
+            &kp GRAVE   &kp LBKT    &kp LBRC   &kp LPAR    &kp LT          &kp GT      &kp RPAR    &kp RBRC   &kp RBKT    &kp TILDE
+        //├───────────┼───────────┼──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┼───────────┼───────────┤
+        //│           │ !         │ &        │ =         │ %         │   │ *         │ -         │ |        │ ?         │           │
+            &trans      &kp EXCL    &kp AMPS   &kp EQUAL   &kp PRCNT       &kp ASTRK   &kp MINUS   &kp PIPE   &kp QMARK   &trans
+        //├───────────┼───────────┼──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┼───────────┼───────────┤
+        //│           │ ^         │ @        │ +         │ $         │   │ #         │ _         │ \        │ /         │           │
+            &trans      &kp CARET   &kp AT     &kp PLUS    &kp DLLR        &kp HASH    &kp UNDER   &kp BSLH   &kp FSLH    &trans
+        //╰───────────┴───────────┴──────────┼───────────┼───────────┤   ├───────────┼───────────┼──────────┴───────────┴───────────╯
+                                               &trans      &trans          &trans      &trans
+        //                                   ╰───────────┴───────────╯   ╰───────────┴───────────╯
             >;
         };
 
@@ -125,19 +143,19 @@
         game_layer {
             display-name = "Game Layer";
             bindings = <
-        //╭─────────────┬────────┬────────┬───────────────┬───────────╮   ╭──────────┬──────────┬──────────┬──────────┬────────────╮
-        //│             │        │        │               │           │   │ /home    │          │          │          │            │
-            &trans        &trans   &trans   &trans          &trans          &mc_home   &trans     &trans     &trans     &trans
-        //├─────────────┼────────┼────────┼───────────────┼───────────┤   ├──────────┼──────────┼──────────┼──────────┼────────────┤
-        //│ A           │ S      │ D      │ F             │           │   │          │          │          │          │            │
-            &kp A         &kp S    &kp D    &kp F           &trans          &trans     &trans     &trans     &trans     &trans
-        //├─────────────┼────────┼────────┼───────────────┼───────────┤   ├──────────┼──────────┼──────────┼──────────┼────────────┤
-        //│ Z (Shift)   │        │        │               │ Escape    │   │          │          │          │          │ To layer 0 │
-            &ht LSHFT Z   &trans   &trans   &trans          &kp ESC         &trans     &trans     &trans     &trans     &to 0
-        //╰─────────────┴────────┴────────┼───────────────┼───────────┤   ├──────────┴──────────┼──────────┼──────────┴────────────╯
-        //                                │ Tab (Ctrl)    │ Space     │   │          │          │
-                                            &ht LCTRL TAB   &kp SPACE       &trans     &trans
-        //                                ╰───────────────┴───────────╯   ╰──────────┴──────────╯
+        //╭───────────┬────────┬────────┬────────────┬────────────╮   ╭───────────┬──────────┬──────────┬──────────┬────────────╮
+        //│           │        │        │            │ Escape (T) │   │ /home (Y) │          │          │          │            │
+            &trans      &trans   &trans   &trans       &td2             &td3        &trans     &trans     &trans     &trans
+        //├───────────┼────────┼────────┼────────────┼────────────┤   ├───────────┼──────────┼──────────┼──────────┼────────────┤
+        //│ A         │ S      │ D      │ F          │            │   │           │          │          │          │            │
+            &kp A       &kp S    &kp D    &kp F        &trans           &trans      &trans     &trans     &trans     &trans
+        //├───────────┼────────┼────────┼────────────┼────────────┤   ├───────────┼──────────┼──────────┼──────────┼────────────┤
+        //│ Shift (Z) │        │        │            │            │   │           │          │          │          │ To layer 0 │
+            &td0        &trans   &trans   &trans       &trans           &trans      &trans     &trans     &trans     &to 0
+        //╰───────────┴────────┴────────┼────────────┼────────────┤   ├───────────┴──────────┼──────────┼──────────┴────────────╯
+        //                              │ Ctrl (Alt) │ Space      │   │           │          │
+                                          &td1         &kp SPACE        &trans      &trans
+        //                              ╰────────────┴────────────╯   ╰───────────┴──────────╯
             >;
         };
     };
